@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Two.AspNetCore.SpaServices.StaticFiles</AssemblyName>
+    <RootNamespace>Two.AspNetCore.SpaServices.StaticFiles</RootNamespace>
+    <Authors>22222</Authors>
+    <Product />
+    <Description>An alternative ISpaStaticFileProvider that supports URL rewriting.</Description>
+    <PackageProjectUrl>https://github.com/22222/Two.AspNetCore.SpaServices.StaticFiles</PackageProjectUrl>
+    <PackageLicenseExpression>MIT OR Unlicense</PackageLicenseExpression>
+    <PackageTags>aspnetcore spa</PackageTags>
+    <Company />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.*" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
