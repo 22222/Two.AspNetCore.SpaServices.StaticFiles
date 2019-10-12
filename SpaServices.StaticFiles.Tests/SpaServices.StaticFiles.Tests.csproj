@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Two.AspNetCore.SpaServices.StaticFiles.Tests</AssemblyName>
+    <RootNamespace>Two.AspNetCore.SpaServices.StaticFiles</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\SpaServices.StaticFiles\SpaServices.StaticFiles.csproj" />
+  </ItemGroup>
+</Project>
