@@ -40,8 +40,12 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
         public int? MaxFileLengthForRewrite { get; set; }
 
         /// <summary>
-        /// Explicitly specify the rewriters to apply to static files.
-        /// This will replace all of the built-in rewriters that would be used by default.
+        /// For HTML files, true if for only the HTML base element's href attribute should be updated and all other href/src attributes should be left alone.
+        /// </summary>
+        public bool? UpdateBaseElementHrefOnly { get; set; }
+
+        /// <summary>
+        /// Any custom rewriters to apply to static files.
         /// </summary>
         public IReadOnlyCollection<ISpaStaticFilesUrlRewriter>? Rewriters { get; set; }
     }

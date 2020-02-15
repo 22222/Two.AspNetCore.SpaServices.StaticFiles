@@ -3,8 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Two.AspNetCore.SpaServices.StaticFiles.Mocks;
 using Xunit;
 
 namespace Two.AspNetCore.SpaServices.StaticFiles
@@ -12,7 +11,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
     public class SpaStaticFilesWithUrlRewriteExtensionsTest
     {
         [Fact]
-        public void UseSpa_NoExceptionThrown()
+        public void UseSpa_ShouldNotThrowException()
         {
             var services = GetServiceCollection();
             services.AddSpaStaticFilesWithUrlRewrite(configuration =>
@@ -21,41 +20,29 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
             });
 
             var serviceProvider = services.BuildServiceProvider();
-            var applicationbuilder = GetApplicationBuilder(serviceProvider);
-            applicationbuilder.UseSpa(x => { });
+            var applicationBuilder = new MockApplicationBuilder(serviceProvider);
+            applicationBuilder.UseSpa(x => { });
         }
 
         [Fact]
-        public void UseSpa_ThrowsInvalidOperationException_IfRootPathNotSet()
+        public void UseSpa_RootPathNotSet_ShouldThrowInvalidOperationException()
         {
             var services = GetServiceCollection();
             services.AddSpaStaticFilesWithUrlRewrite(_ => { });
 
             var serviceProvider = services.BuildServiceProvider();
-            var applicationbuilder = GetApplicationBuilder(serviceProvider);
+            var applicationBuilder = new MockApplicationBuilder(serviceProvider);
             var exception = Assert.Throws<InvalidOperationException>(
-                () => applicationbuilder.UseSpa(_ => { }));
+                () => applicationBuilder.UseSpa(_ => { }));
             Assert.Contains(nameof(UrlRewriteSpaStaticFilesOptions.RootPath), exception.Message, StringComparison.Ordinal);
-        }
-
-        private IApplicationBuilder GetApplicationBuilder(IServiceProvider serviceProvider)
-        {
-            var applicationbuilderMock = new Mock<IApplicationBuilder>();
-            applicationbuilderMock
-                .Setup(s => s.ApplicationServices)
-                .Returns(serviceProvider);
-            return applicationbuilderMock.Object;
         }
 
         private ServiceCollection GetServiceCollection()
         {
-            var hostingEnvironmentMock = new Mock<Microsoft.AspNetCore.Hosting.IHostingEnvironment>();
-            hostingEnvironmentMock
-                .Setup(s => s.ContentRootPath)
-                .Returns("ContentRoot");
             var services = new ServiceCollection();
             services.AddLogging();
-            services.TryAddSingleton(hostingEnvironmentMock.Object);
+            services.TryAddSingleton<Microsoft.AspNetCore.Hosting.IHostingEnvironment, MockHostingEnvironment>();
+            services.TryAddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, MockHttpContextAccessor>();
             return services;
         }
     }

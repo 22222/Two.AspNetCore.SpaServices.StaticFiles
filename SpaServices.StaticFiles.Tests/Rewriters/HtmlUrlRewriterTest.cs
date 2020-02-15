@@ -52,19 +52,24 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
         [Fact]
         public void Rewrite_ThrowsArgumentNullException_IfHtmlIsNull()
         {
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             Assert.Throws<ArgumentNullException>(() => rewriter.Rewrite(null, "./", "path/to"));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
 
         [Fact]
         public void Rewrite_ReturnsInputHtml_IfSourceOrTargetIsNullOrEmpty()
         {
             var html = @"<html src=""./test.html""></html>";
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             Assert.Equal(html, rewriter.Rewrite(html, null, null));
             Assert.Equal(html, rewriter.Rewrite(html, string.Empty, string.Empty));
             Assert.Equal(html, rewriter.Rewrite(html, "./", null));
             Assert.Equal(html, rewriter.Rewrite(html, "./", string.Empty));
             Assert.Equal(html, rewriter.Rewrite(html, null, "./"));
             Assert.Equal(html, rewriter.Rewrite(html, string.Empty, "./"));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
 
         [Fact]

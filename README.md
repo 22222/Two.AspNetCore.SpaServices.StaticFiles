@@ -43,15 +43,16 @@ using Two.AspNetCore.SpaServices.StaticFiles;
 services.AddSpaStaticFilesWithUrlRewrite(configuration =>
 {
     configuration.RootPath = "ClientApp/build";
+    configuration.SourcePathBase = "./";
+    configuration.SourcePathBaseSelector = (httpRequest) => httpRequest.Path.StartsWithSegments("test", StringComparison.OrdinalIgnoreCase) ? "./test" : "./";
+    configuration.TargetPathBaseSelector = (httpRequest) => httpRequest.PathBase + '/';
+    configuration.MaxFileLengthForRewrite = 10000;
+    configuration.UpdateBaseElementHrefOnly = true;
     configuration.Rewriters = new ISpaStaticFilesUrlRewriter[]
     {
         new HtmlUrlRewriter(),
         new ServiceWorkerJsUrlRewriter(),
     };
-    configuration.SourcePathBase = "./";
-    configuration.SourcePathBaseSelector = (httpRequest) => httpRequest.Path.StartsWithSegments("test", StringComparison.OrdinalIgnoreCase) ? "./test" : "./";
-    configuration.TargetPathBaseSelector = (httpRequest) => httpRequest.PathBase + '/';
-    configuration.MaxFileLengthForRewrite = 10000;
 });
 ```
 
