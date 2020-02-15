@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text.RegularExpressions;
 
 namespace Two.AspNetCore.SpaServices.StaticFiles
@@ -47,6 +46,8 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
             return modifiedHtml;
         }
 
-        private static string RegexEscapeReplacement(string replacement) => replacement?.Replace("$", "$$");
+#pragma warning disable CA1307 // Specify StringComparison
+        private static string RegexEscapeReplacement(string replacement) => replacement.Replace("$", "$$");
+#pragma warning restore CA1307 // Specify StringComparison
     }
 }

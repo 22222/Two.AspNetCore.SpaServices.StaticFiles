@@ -48,6 +48,8 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
             return modifiedJs;
         }
 
-        private static string RegexEscapeReplacement(string replacement) => replacement?.Replace("$", "$$");
+#pragma warning disable CA1307 // Specify StringComparison
+        private static string RegexEscapeReplacement(string replacement) => replacement.Replace("$", "$$");
+#pragma warning restore CA1307 // Specify StringComparison
     }
 }

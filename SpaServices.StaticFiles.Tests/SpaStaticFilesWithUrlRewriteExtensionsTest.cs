@@ -35,7 +35,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
             var applicationbuilder = GetApplicationBuilder(serviceProvider);
             var exception = Assert.Throws<InvalidOperationException>(
                 () => applicationbuilder.UseSpa(_ => { }));
-            Assert.Contains(nameof(UrlRewriteSpaStaticFilesOptions.RootPath), exception.Message);
+            Assert.Contains(nameof(UrlRewriteSpaStaticFilesOptions.RootPath), exception.Message, StringComparison.Ordinal);
         }
 
         private IApplicationBuilder GetApplicationBuilder(IServiceProvider serviceProvider)

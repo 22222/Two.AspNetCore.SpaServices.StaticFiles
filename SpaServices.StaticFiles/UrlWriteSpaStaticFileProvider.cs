@@ -17,7 +17,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
     /// </summary>
     public sealed class UrlWriteSpaStaticFileProvider : ISpaStaticFileProvider, IDisposable
     {
-        private readonly UrlRewriteFileProvider fileProvider;
+        private readonly UrlRewriteFileProvider? fileProvider;
 
         public UrlWriteSpaStaticFileProvider(IServiceProvider serviceProvider, UrlRewriteSpaStaticFilesOptions options)
         {
@@ -44,12 +44,12 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
         }
 
         /// <inheritdoc />
-        public IFileProvider FileProvider => fileProvider;
+        public IFileProvider? FileProvider => fileProvider;
 
         /// <inheritdoc />
         public void Dispose()
         {
-            fileProvider.Dispose();
+            fileProvider?.Dispose();
         }
     }
 
@@ -63,8 +63,8 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
 
         private readonly IReadOnlyCollection<ISpaStaticFilesUrlRewriter> rewriters;
         private readonly string sourcePathBase;
-        private readonly Func<HttpRequest, string> sourcePathBaseSelector;
-        private readonly Func<HttpRequest, string> targetPathBaseSelector;
+        private readonly Func<HttpRequest?, string>? sourcePathBaseSelector;
+        private readonly Func<HttpRequest?, string>? targetPathBaseSelector;
         private readonly int? maxFileLengthForRewrite;
 
         internal UrlRewriteFileProvider(IFileProvider innerFileProvider, IHttpContextAccessor httpContextAccessor, UrlRewriteSpaStaticFilesOptions options)
@@ -73,7 +73,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
             this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 
             if (options == null) throw new ArgumentNullException(nameof(options));
-            this.rewriters = rewriters ?? new ISpaStaticFilesUrlRewriter[]
+            this.rewriters = options.Rewriters ?? new ISpaStaticFilesUrlRewriter[]
             {
                 new HtmlUrlRewriter(),
                 new ServiceWorkerJsUrlRewriter(),
@@ -102,7 +102,12 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
 
         private IFileInfo RewriteFileIfNecessary(IFileInfo fileInfo)
         {
-            if (fileInfo == null || fileInfo.IsDirectory || !fileInfo.Exists)
+            if (fileInfo == null)
+            {
+                throw new ArgumentNullException(nameof(fileInfo));
+            }
+
+            if (fileInfo.IsDirectory || !fileInfo.Exists)
             {
                 return fileInfo;
             }
@@ -141,12 +146,12 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
             return new TextFileInfo(
                 content: modifiedContent,
                 name: fileInfo.Name,
-                physicalPath: fileInfo.PhysicalPath,
+                physicalPath: isModified ? null : fileInfo.PhysicalPath,
                 lastModified: isModified ? DateTimeOffset.UtcNow : fileInfo.LastModified
             );
         }
 
-        private string GetSourcePathBase(HttpRequest request)
+        private string GetSourcePathBase(HttpRequest? request)
         {
             if (sourcePathBaseSelector != null)
             {
@@ -155,7 +160,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
             return sourcePathBase;
         }
 
-        private string GetTargetPathBase(HttpRequest request)
+        private string GetTargetPathBase(HttpRequest? request)
         {
             if (targetPathBaseSelector != null)
             {
@@ -204,7 +209,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
     {
         private readonly string content;
 
-        public TextFileInfo(string content, string name, string physicalPath, DateTimeOffset lastModified)
+        public TextFileInfo(string content, string name, string? physicalPath, DateTimeOffset lastModified)
         {
             this.content = content ?? throw new ArgumentNullException(nameof(content));
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -236,7 +241,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
         public bool IsDirectory => false;
 
         /// <inheritdoc />
-        public string PhysicalPath { get; }
+        public string? PhysicalPath { get; }
 
         /// <inheritdoc />
         public DateTimeOffset LastModified { get; }
