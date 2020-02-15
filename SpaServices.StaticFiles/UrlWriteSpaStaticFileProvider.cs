@@ -15,6 +15,9 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
     {
         private readonly UrlRewriteFileProvider? fileProvider;
 
+        /// <summary>
+        /// Constructs a <see cref="UrlRewriteFileProvider"/> with the given options.
+        /// </summary>
         public UrlWriteSpaStaticFileProvider(IServiceProvider serviceProvider, UrlRewriteSpaStaticFilesOptions options)
         {
             if (serviceProvider == null)
@@ -31,7 +34,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
                 throw new ArgumentException($"The {nameof(options.RootPath)} property of {nameof(options)} cannot be null or empty.", paramName: nameof(options));
             }
 
-            var env = serviceProvider.GetRequiredService<IHostingEnvironment>();
+            var env = serviceProvider.GetRequiredService<IWebHostEnvironment>();
             var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
 
             var absoluteRootPath = Path.Combine(env.ContentRootPath, options.RootPath);

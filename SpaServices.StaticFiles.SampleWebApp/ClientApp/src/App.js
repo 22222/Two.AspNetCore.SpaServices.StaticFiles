@@ -1,18 +1,10 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { Counter } from './components/Counter';
+import React from 'react';
 
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
+export default function App({ baseUrl }) {
     return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-      </Layout>
+        <main>
+            <h1>Hello, world!</h1>
+            <small>The base url is "<code>{baseUrl}</code>".</small>
+        </main>
     );
-  }
 }

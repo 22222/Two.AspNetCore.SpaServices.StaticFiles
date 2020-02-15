@@ -54,7 +54,7 @@ namespace Two.AspNetCore.SpaServices.StaticFiles
         {
             var services = new ServiceCollection();
             services.AddLogging();
-            services.TryAddSingleton<Microsoft.AspNetCore.Hosting.IHostingEnvironment, MockHostingEnvironment>();
+            services.TryAddSingleton<Microsoft.AspNetCore.Hosting.IWebHostEnvironment, MockWebHostEnvironment>();
             services.TryAddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, MockHttpContextAccessor>();
             return services;
         }

@@ -4,7 +4,7 @@ using System;
 
 namespace Two.AspNetCore.SpaServices.StaticFiles.Mocks
 {
-    public class MockHostingEnvironment : IHostingEnvironment
+    public class MockWebHostEnvironment : IWebHostEnvironment
     {
         /// <inheritdoc />
         public string EnvironmentName { get; set; } = "Mock";
